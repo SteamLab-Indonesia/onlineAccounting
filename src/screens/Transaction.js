@@ -5,7 +5,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import {getTransaction} from  '../libs/firebase'
+import {getTransaction} from  '../libs/database'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,

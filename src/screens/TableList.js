@@ -8,10 +8,7 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import {getTransaction} from  '../libs/firebase';
-import {getIncomeCategory} from  '../libs/firebase';
-import {getExpenseCategory} from  '../libs/firebase';
-import { render } from "react-dom";
+import {getTransaction, getIncomeCategory, getExpenseCategory} from  '../libs/database';
 
 const styles = {
   cardCategoryWhite: {
