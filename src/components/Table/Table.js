@@ -62,10 +62,12 @@ export default function CustomTable(props) {
                 </TableCell>
                 <TableCell>
                   <Select
-                    value={item.category}
+				  	required
+                    value={item.category != ''? item.category : 'none'}
                     name="category" id="category"
                     placeholder = 'Category'>
-                    <ListSubheader>Income</ListSubheader>  
+					<MenuItem value="none" disabled>Please Choose ..</MenuItem>
+                    <ListSubheader>--- Income ---</ListSubheader>  
                     {
                         income.map((incomeItem) => {
                             return (
@@ -73,7 +75,7 @@ export default function CustomTable(props) {
                             )
                         })
                     }
-                    <ListSubheader>Expense</ListSubheader>
+                    <ListSubheader>--- Expense ---</ListSubheader>
                     {
                         expense.map((expenseItem) => {
                             return (
