@@ -24,6 +24,16 @@ export default class TransactionTable extends Component{
 			this.props.onAdd(index);
 	}
 
+	onDeletePress = (index) => {
+		if (this.props.onDelete)
+			this.props.onDelete(index);
+	}
+
+	onChangePress = (event,key,name) => {
+		if(this.props.onChange)
+			this.props.onChange(event,key,name);
+	}
+
 	render() {
 		const { tableHead, tableData, tableHeaderColor, income, expense } = this.props;
 		const classes = styles;
@@ -59,7 +69,7 @@ export default class TransactionTable extends Component{
 							);
 						})} */}
 						<TableCell>
-							<TextField
+							<TextField onChange = {(event) => this.onChangePress(event,key,'date')}
 								id="date"
 								// label="Birthday"
 								type="date"
@@ -70,7 +80,7 @@ export default class TransactionTable extends Component{
 							/>
 						</TableCell>
 						<TableCell>
-							<Select
+							<Select onChange = {(event) => this.onChangePress(event,key,'category')}
 							required
 							value={item.category != ''? item.category : 'none'}
 							name="category" id="category"
@@ -95,14 +105,14 @@ export default class TransactionTable extends Component{
 							</Select>
 						</TableCell>
 						<TableCell>
-							<input type= 'text' value={item.description} placeholder = 'Description' />
+							<input type= 'text' value={item.description} placeholder = 'Description' onChange = {(event) => this.onChangePress(event,key,'description')}/>
 						</TableCell>
 						<TableCell>
-							<input type= 'text' value={item.amount} placeholder = '0' />
+							<input type= 'text' value={item.amount} placeholder = '0' onChange = {(event) => this.onChangePress(event,key,'amount')}/>
 						</TableCell>
 						<TableCell>
 							<input type= 'button' value = '+' onClick={()=>this.onAddPress(key)}></input>
-							<input type= 'button' value = '-'></input>
+							<input type= 'button' value = '-'onClick={()=>this.onDeletePress(key)}></input>
 						</TableCell>
 						</TableRow>
 					);

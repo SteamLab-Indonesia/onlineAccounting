@@ -77,3 +77,49 @@ export function getExpenseCategory(){
 		})
   })
 }
+
+export function updateTransaction(transactionId, newData){
+	return new Promise((resolve,reject)=>{
+		if (transactionId)
+		{
+			const db = firebase.firestore();
+			let currentDoc = db.collection('Transaction').doc(transactionId);
+			if (currentDoc)
+			{
+				currentDoc.set(newData).then(()=>
+				{
+					resolve('success');
+				}).catch((err) => reject(err));
+			}
+		}
+		else
+		{
+			reject('Invalid Transaction ID')
+		}
+	})
+}
+
+export function insertTransaction(newData){
+	return new Promise((resolve,reject)=>{
+		if (newData)
+		{
+			const db = firebase.firestore();
+			db.collection('Transaction').add(newData)
+			.then((snapshot) => {
+				console.log(snapshot);
+				resolve(snapshot.id);
+			})
+			// if (currentDoc)
+			// {
+			// 	currentDoc.add(newData).then(()=>
+			// 	{
+			// 		resolve('success');
+			// 	}).catch((err) => reject(err));
+			// }
+		}
+		else
+		{
+			reject('Invalid Transaction ID')
+		}
+	})
+}

@@ -6,7 +6,7 @@ import Table from "components/Table/TransactionTable.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import {getTransaction, getIncomeCategory, getExpenseCategory} from  '../libs/database';
+import {getTransaction, getIncomeCategory, getExpenseCategory, updateTransaction, insertTransaction} from  '../libs/database';
 
 const styles = {
   cardCategoryWhite: {
@@ -71,6 +71,7 @@ export default class TransactionList extends Component {
     // collate.push({new_data});
 
     let new_empty_line = {
+        id: '',
         date: new Date().getFullYear() + '-' + ('00' + (new Date().getMonth()+1)).slice(-2) + '-' + new Date().getDate(),
         category: '',
         description: '',
@@ -81,8 +82,33 @@ export default class TransactionList extends Component {
     this.setState({
         collate
     });
-
   }
+
+  pressDelete = (index) =>{
+    let collate = this.state.collate;
+    collate.splice(index,1);
+    this.setState({collate})
+  }
+  
+  pressChange = ((event, index,name) =>{
+    let collate = this.state.collate;
+    collate[index][name]=event.target.value
+    if (this.state.collate[index].id != '')
+    {
+      updateTransaction(this.state.collate[index].id, this.state.collate[index])
+      this.setState({collate});
+    }
+    else
+    {
+      insertTransaction(this.state.collate[index]).then((docId) => {
+        console.log('inserted data:');
+        console.log(docId);
+        this.state.collate[index].id = docId;
+        this.setState({collate});
+      })
+    }
+      
+  })
 
   // pressDelete = (index) =>{
   //   console.log('delete' +index)
@@ -133,6 +159,8 @@ export default class TransactionList extends Component {
                 income={this.state.income}
                 expense={this.state.expense}
                 onAdd={this.pressAdd}
+                onDelete={this.pressDelete}
+                onChange={this.pressChange}
               />
             </CardBody>
           </Card>
