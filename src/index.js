@@ -25,7 +25,7 @@ import "assets/css/material-dashboard-react.css?v=1.8.0";
 
 //screens
 import Login from 'screens/login';
-import Table from "screens/TableList";
+import TransactionList from "screens/TransactionList";
 
 const hist = createBrowserHistory();
 
@@ -33,7 +33,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/login" component={Login} />
-      <Route path='/transaction' component = {Table} />
+      <Route path='/transaction' component = {TransactionList} />
     </Switch>
   </Router>,
   document.getElementById("root")

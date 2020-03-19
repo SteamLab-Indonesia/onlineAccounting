@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,99 +16,109 @@ import styles from "assets/jss/material-dashboard-react/components/tableStyle.js
 
 const useStyles = makeStyles(styles);
 
-export default function CustomTable(props) {
-  const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, income, expense } = props;
-  return (
-    <div className={classes.tableResponsive}>
-      <Table className={classes.table}>
-        {tableHead !== undefined ? (
-          <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
-            <TableRow className={classes.tableHeadRow}>
-              {tableHead.map((prop, key) => {
-                return (
-                  <TableCell
-                    className={classes.tableCell + " " + classes.tableHeadCell}
-                    key={key}
-                  >
-                    {prop}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-        ) : null}
-        <TableBody>
-          {tableData.map((item, key) => {
-            return (
-              <TableRow key={key} className={classes.tableBodyRow}>
-                {/* {prop.map((prop, key) => {
-                  return (
-                    <TableCell className={classes.tableCell} key={key}>
-                      {prop}
-                    </TableCell>
-                  );
-                })} */}
-                <TableCell>
-                  <TextField
-                      id="date"
-                      // label="Birthday"
-                      type="date"
-                      value = {item.date ? item.date : this.state.date}
-                      InputLabelProps={{
-                      shrink: true,
-                      }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Select
-				  	required
-                    value={item.category != ''? item.category : 'none'}
-                    name="category" id="category"
-                    placeholder = 'Category'>
-					<MenuItem value="none" disabled>Please Choose ..</MenuItem>
-                    <ListSubheader>--- Income ---</ListSubheader>  
-                    {
-                        income.map((incomeItem) => {
-                            return (
-                                <MenuItem value={incomeItem.id}>{incomeItem.name}</MenuItem>
-                            )
-                        })
-                    }
-                    <ListSubheader>--- Expense ---</ListSubheader>
-                    {
-                        expense.map((expenseItem) => {
-                            return (
-                                <MenuItem value={expenseItem.id}>{expenseItem.name}</MenuItem>
-                            )
-                        })
-                    }
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <input type= 'text' value={item.description} placeholder = 'Description' />
-                </TableCell>
-                <TableCell>
-                  <input type= 'text' value={item.amount} placeholder = '0' />
-                </TableCell>
-                <TableCell>
-                  <input type= 'button' value = '+'></input>
-                  <input type= 'button' value = '-'></input>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
-  );
+export default class TransactionTable extends Component{
+	
+	
+	onAddPress = (index) => {
+		if (this.props.onAdd)
+			this.props.onAdd(index);
+	}
+
+	render() {
+		const { tableHead, tableData, tableHeaderColor, income, expense } = this.props;
+		const classes = styles;
+
+		return (
+			<div className={classes.tableResponsive}>
+				<Table className={classes.table}>
+				{tableHead !== undefined ? (
+					<TableHead className={classes[tableHeaderColor + "TableHeader"]}>
+					<TableRow className={classes.tableHeadRow}>
+						{tableHead.map((prop, key) => {
+						return (
+							<TableCell
+							className={classes.tableCell + " " + classes.tableHeadCell}
+							key={key}
+							>
+							{prop}
+							</TableCell>
+						);
+						})}
+					</TableRow>
+					</TableHead>
+				) : null}
+				<TableBody>
+					{tableData.map((item, key) => {
+					return (
+						<TableRow key={key} className={classes.tableBodyRow}>
+						{/* {prop.map((prop, key) => {
+							return (
+							<TableCell className={classes.tableCell} key={key}>
+								{prop}
+							</TableCell>
+							);
+						})} */}
+						<TableCell>
+							<TextField
+								id="date"
+								// label="Birthday"
+								type="date"
+								value = {item.date ? item.date : this.state.date}
+								InputLabelProps={{
+								shrink: true,
+								}}
+							/>
+						</TableCell>
+						<TableCell>
+							<Select
+							required
+							value={item.category != ''? item.category : 'none'}
+							name="category" id="category"
+							placeholder = 'Category'>
+							<MenuItem value="none" disabled>Please Choose ..</MenuItem>
+							<ListSubheader>--- Income ---</ListSubheader>  
+							{
+								income.map((incomeItem) => {
+									return (
+										<MenuItem value={incomeItem.id}>{incomeItem.name}</MenuItem>
+									)
+								})
+							}
+							<ListSubheader>--- Expense ---</ListSubheader>
+							{
+								expense.map((expenseItem) => {
+									return (
+										<MenuItem value={expenseItem.id}>{expenseItem.name}</MenuItem>
+									)
+								})
+							}
+							</Select>
+						</TableCell>
+						<TableCell>
+							<input type= 'text' value={item.description} placeholder = 'Description' />
+						</TableCell>
+						<TableCell>
+							<input type= 'text' value={item.amount} placeholder = '0' />
+						</TableCell>
+						<TableCell>
+							<input type= 'button' value = '+' onClick={()=>this.onAddPress(key)}></input>
+							<input type= 'button' value = '-'></input>
+						</TableCell>
+						</TableRow>
+					);
+					})}
+				</TableBody>
+				</Table>
+			</div>
+		);
+	}
 }
 
-CustomTable.defaultProps = {
+TransactionTable.defaultProps = {
   tableHeaderColor: "gray"
 };
 
-CustomTable.propTypes = {
+TransactionTable.propTypes = {
   tableHeaderColor: PropTypes.oneOf([
     "warning",
     "primary",

@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -40,9 +38,7 @@ const styles = {
   }
 };
 
-const useStyles = makeStyles(styles);
-
-export default class TableList extends Component {
+export default class TransactionList extends Component {
   
   state = {
     collate: [],
@@ -61,32 +57,32 @@ export default class TableList extends Component {
         this.setState({expense:data})
     })
   }
-  // pressAdd = (index) =>{
-  //   let {date, category, description, amount, collate} = 
-  //       this.state;
+  pressAdd = (index) =>{
+    let {date, category, description, amount, collate} = 
+        this.state;
 
-  //   // New Data
-  //   // let new_data = {
-  //   //     date,
-  //   //     category,
-  //   //     description,
-  //   //     amount
-  //   // }
-  //   // collate.push({new_data});
+    // New Data
+    // let new_data = {
+    //     date,
+    //     category,
+    //     description,
+    //     amount
+    // }
+    // collate.push({new_data});
 
-  //   let new_empty_line = {
-  //       date: new Date().getFullYear() + '-' + ('00' + (new Date().getMonth()+1)).slice(-2) + '-' + new Date().getDate(),
-  //       category: '',
-  //       description: '',
-  //       amount: ''
-  //   };
-  //   collate.push(new_empty_line);
+    let new_empty_line = {
+        date: new Date().getFullYear() + '-' + ('00' + (new Date().getMonth()+1)).slice(-2) + '-' + new Date().getDate(),
+        category: '',
+        description: '',
+        amount: ''
+    };
+    collate.push(new_empty_line);
 
-  //   this.setState({
-  //       collate
-  //   });
+    this.setState({
+        collate
+    });
 
-  // }
+  }
 
   // pressDelete = (index) =>{
   //   console.log('delete' +index)
@@ -128,9 +124,6 @@ export default class TableList extends Component {
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Journal Transaction</h4>
-              <p className={classes.cardCategoryWhite}>
-                Plese view your transaction
-              </p>
             </CardHeader>
             <CardBody>
               <Table
@@ -139,6 +132,7 @@ export default class TableList extends Component {
                 tableData={this.state.collate}
                 income={this.state.income}
                 expense={this.state.expense}
+                onAdd={this.pressAdd}
               />
             </CardBody>
           </Card>
