@@ -90,25 +90,47 @@ export default class TransactionList extends Component {
     this.setState({collate})
   }
   
-  pressChange = ((event, index,name) =>{
+  // pressChange = ((event, index,name) =>{
+  //   let collate = this.state.collate;
+  //   collate[index][name]=event.target.value
+  //   if (this.state.collate[index].id != '')
+  //   {
+  //     updateTransaction(this.state.collate[index].id, this.state.collate[index])
+  //     this.setState({collate});
+  //   }
+  //   else
+  //   {
+  //     insertTransaction(this.state.collate[index]).then((docId) => {
+  //       console.log('inserted data:');
+  //       console.log(docId);
+  //       this.state.collate[index].id = docId;
+  //       this.setState({collate});
+  //     })
+  //   }
+      
+  // })
+
+  pressChange = ((event, index,name) =>{ //simpan di state
     let collate = this.state.collate;
-    collate[index][name]=event.target.value
-    if (this.state.collate[index].id != '')
+    collate[index][name]=event.target.value;
+    this.setState({collate}); 
+  })
+
+  updateChange = ((index) => { //simpan di database
+    let collate = this.state.collate;
+    if (collate[index].id != '')
     {
-      updateTransaction(this.state.collate[index].id, this.state.collate[index])
-      this.setState({collate});
+      updateTransaction(collate[index].id, collate[index])
     }
     else
     {
-      insertTransaction(this.state.collate[index]).then((docId) => {
-        console.log('inserted data:');
-        console.log(docId);
-        this.state.collate[index].id = docId;
+      insertTransaction(collate[index]).then((docId) => {
+        collate[index].id = docId;
         this.setState({collate});
       })
-    }
-      
+    }    
   })
+
 
   // pressDelete = (index) =>{
   //   console.log('delete' +index)
@@ -161,6 +183,7 @@ export default class TransactionList extends Component {
                 onAdd={this.pressAdd}
                 onDelete={this.pressDelete}
                 onChange={this.pressChange}
+                onBlur={this.updateChange}
               />
             </CardBody>
           </Card>

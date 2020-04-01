@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ListSubheader } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
 
@@ -32,6 +34,11 @@ export default class TransactionTable extends Component{
 	onChangePress = (event,key,name) => {
 		if(this.props.onChange)
 			this.props.onChange(event,key,name);
+	}
+
+	onBlur = (key) => {
+		if (this.props.onBlur)
+			this.props.onBlur(key);
 	}
 
 	render() {
@@ -103,12 +110,15 @@ export default class TransactionTable extends Component{
 								})
 							}
 							</Select>
+							<IconButton aria-label="Add">
+							<AddIcon/>
+							</IconButton>
 						</TableCell>
 						<TableCell>
-							<input type= 'text' value={item.description} placeholder = 'Description' onChange = {(event) => this.onChangePress(event,key,'description')}/>
+							<input type= 'text' value={item.description} placeholder = 'Description' onBlur={(event) => this.onBlur(key)} onChange = {(event) => this.onChangePress(event,key,'description')}/>
 						</TableCell>
 						<TableCell>
-							<input type= 'text' value={item.amount} placeholder = '0' onChange = {(event) => this.onChangePress(event,key,'amount')}/>
+							<input type= 'text' value={item.amount} placeholder = '0' onBlur={(event) => this.onBlur(key)} onChange = {(event) => this.onChangePress(event,key,'amount')}/>
 						</TableCell>
 						<TableCell>
 							<input type= 'button' value = '+' onClick={()=>this.onAddPress(key)}></input>

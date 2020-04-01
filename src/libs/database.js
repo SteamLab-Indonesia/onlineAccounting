@@ -123,3 +123,28 @@ export function insertTransaction(newData){
 		}
 	})
 }
+
+export function insertCategory(newData){
+	return new Promise((resolve,reject)=>{
+		if (newData)
+		{
+			const db = firebase.firestore();
+			db.collection('Category').add(newData)
+			.then((snapshot) => {
+				console.log(snapshot);
+				resolve(snapshot.id);
+			})
+			// if (currentDoc)
+			// {
+			// 	currentDoc.add(newData).then(()=>
+			// 	{
+			// 		resolve('success');
+			// 	}).catch((err) => reject(err));
+			// }
+		}
+		else
+		{
+			reject('Invalid Category ID')
+		}
+	})
+}
