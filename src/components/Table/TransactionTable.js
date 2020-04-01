@@ -13,13 +13,25 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { ListSubheader } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import {insertCategory} from '../../libs/database'; //naik 2x dari TransactionTable to component to source then bru bisa ke libs
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
 
+//save 
 const useStyles = makeStyles(styles);
 
 export default class TransactionTable extends Component{
-	
+	state = {
+		open: false,
+		section: '',
+		category: ''
+	}
 	
 	onAddPress = (index) => {
 		if (this.props.onAdd)
@@ -39,6 +51,29 @@ export default class TransactionTable extends Component{
 	onBlur = (key) => {
 		if (this.props.onBlur)
 			this.props.onBlur(key);
+	}
+
+	onChangeSection =(event) => {
+		this.setState({section: event.target.value});
+	}
+
+	onChangeCategory = (event) => {
+		this.setState({category:event.target.value});
+	}
+
+	handleSave = () => {
+		this.setState({open:false})
+		insertCategory({
+			name: this.state.category,
+			section: this.state.section
+		}).then(() => {
+			if(this.props.updateCategory) //kl updateCategory di TransactionList deleted, gbs jln
+				this.props.updateCategory()
+		})
+	}
+
+	handleClose = () => {
+		this.setState({open:false})
 	}
 
 	render() {
@@ -110,7 +145,7 @@ export default class TransactionTable extends Component{
 								})
 							}
 							</Select>
-							<IconButton aria-label="Add">
+							<IconButton aria-label="Add" onClick = {()=>this.setState({open:true})}>
 							<AddIcon/>
 							</IconButton>
 						</TableCell>
@@ -129,6 +164,40 @@ export default class TransactionTable extends Component{
 					})}
 				</TableBody>
 				</Table>
+				<Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+					<DialogTitle id="form-dialog-title">Category</DialogTitle>
+					<DialogContent>
+					<DialogContentText>
+						Add New Category
+					</DialogContentText>
+					<Select
+						onChange = {(event) => this.onChangeSection(event)}
+						required
+						value={this.state.section}
+						name="category" id="category"
+						placeholder = 'Category'>
+						<MenuItem value={'Income'}>Income</MenuItem>
+						<MenuItem value={'Expense'}>Expense</MenuItem>
+					</Select>
+					<TextField
+						autoFocus
+						margin="dense"
+						id="name"
+						label="Category"
+						onChange = {(event) => this.onChangeCategory(event)}
+						type="text"
+						fullWidth
+					/>
+					</DialogContent>
+					<DialogActions>
+					<Button onClick={this.handleClose} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={this.handleSave} color="primary">
+						Save
+					</Button>
+					</DialogActions>
+				</Dialog>
 			</div>
 		);
 	}

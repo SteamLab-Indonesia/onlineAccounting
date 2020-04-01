@@ -8,6 +8,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import {getTransaction, getIncomeCategory, getExpenseCategory, updateTransaction, insertTransaction} from  '../libs/database';
 
+//menampilkan
+
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -50,13 +52,18 @@ export default class TransactionList extends Component {
     getTransaction().then((data) => {
         this.setState({collate:data})
     })
+    this.updateCategory();
+  }
+
+  updateCategory = () =>  {
     getIncomeCategory().then((data) => {
-        this.setState({income:data})
+      this.setState({income:data})
     })
     getExpenseCategory().then((data) => {
-        this.setState({expense:data})
+      this.setState({expense:data})
     })
   }
+
   pressAdd = (index) =>{
     let {date, category, description, amount, collate} = 
         this.state;
@@ -184,6 +191,7 @@ export default class TransactionList extends Component {
                 onDelete={this.pressDelete}
                 onChange={this.pressChange}
                 onBlur={this.updateChange}
+                updateCategory={this.updateCategory}
               />
             </CardBody>
           </Card>
