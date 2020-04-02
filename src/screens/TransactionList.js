@@ -172,6 +172,7 @@ export default class TransactionList extends Component {
   // }
 
   render() {
+    console.log(this.state.income)
     const classes = styles;
     return (
       <GridContainer>
@@ -200,3 +201,4 @@ export default class TransactionList extends Component {
     );
   }
 }
+//this.props itu dari TransactionList

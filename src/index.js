@@ -24,17 +24,13 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
 //screens
-import Login from 'screens/login';
-import TransactionList from "screens/TransactionList";
+import App from './App';
 
 const hist = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={hist}>
-    <Switch>
-      <Route path="/login" component={Login} />
-      <Route path='/transaction' component = {TransactionList} />
-    </Switch>
+    <App/>
   </Router>,
   document.getElementById("root")
 );
