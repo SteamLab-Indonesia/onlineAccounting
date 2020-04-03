@@ -46,11 +46,11 @@ class Dashboard extends Component { //function has no state, class extends from 
     componentDidMount = () => {
       //firebase - get income data
       getIncomeCategory().then((data) => {
-        this.setState({income:data})
+        this.setState({income:data.map((item)=>item.id)})
       })
       //firebase - get expense data
       getExpenseCategory().then((data) => {
-        this.setState({expense:data})
+        this.setState({expense:data.map((item)=>item.id)})
       })
       //firebase-get transaction
       getTransaction().then((data) => {
@@ -58,41 +58,13 @@ class Dashboard extends Component { //function has no state, class extends from 
       })
     }
 
-    //   updateIncomeList = () => {
-    //     let incomeList = this.state.incomeList;
-    //     let income = this.state.income;
-    //     getTransaction().then((data) => {
-    //       for (let i=0; i< data.length; i++){
-    //         if (data[i].id.includes(income.id))
-    //           this.setState({incomeList:data[i].amount})
-    //       }
-    //     })
-        
-    //   }
-
-    // //calculate total income and expense amount
-    // updateAmount = () => {
-    //   let income = this.state.income;
-    //   let expense = this.state.expense
-    //   let sum = 0;
-    //   for (let i=0 ; i < income.length ; i++) {
-    //     sum = sum + income[i];
-    //   }
-    //   this.setState({incomeAmount:sum})
-    // }
-    // //calculate balance
-    // updateBalanceAmount =() => {
-    //   let balance = this.state.balanceAmount;
-    //   balance = this.state.incomeAmount - this.state.expenseAmount;
-    //   this.setState({balance});
-    // }
-
     render(){
         let income = this.state.income;
-        let incomeAmount=this.state.incomeAmount;
-        let expenseAmount=this.state.expenseAmount;
-        let balanceAmount=this.state.balanceAmount;
         let transaction = this.state.transaction
+        let incomeAmount=0;
+        let expenseAmount=0;
+        let balanceAmount=0;
+
         for (let i=0; i< transaction.length; i++){
           if(income.includes(transaction[i].category)){
             incomeAmount = incomeAmount + Number(transaction[i].amount);
@@ -100,8 +72,8 @@ class Dashboard extends Component { //function has no state, class extends from 
           else{
             expenseAmount = expenseAmount + Number(transaction[i].amount);
           }
-          balanceAmount = incomeAmount-expenseAmount;
         }
+        balanceAmount = incomeAmount - expenseAmount;
 
         const { classes } = this.props;
         const bull = <span className={classes.bullet}>•</span>;
@@ -110,15 +82,15 @@ class Dashboard extends Component { //function has no state, class extends from 
           <div className = {classes.container}>
             <CardSummary
               title='Income'
-              content= {'Amount: '+ this.state.incomeAmount}
+              content= {'Amount: '+ incomeAmount}
             />
             <CardSummary
               title='Expense'
-              content= {'Amount: '+ this.state.expenseAmount}
+              content= {'Amount: '+ expenseAmount}
             />
             <CardSummary
               title='Balance'
-              content= {'Amount: '+ this.state.balanceAmount}
+              content= {'Amount: '+ balanceAmount}
             />
           </div>
         );
