@@ -119,7 +119,11 @@ export default class TransactionList extends Component {
 
   pressChange = ((event, index,name) =>{ //simpan di state
     let collate = this.state.collate;
-    collate[index][name]=event.target.value;
+    // If it is amount field, then convert to integer
+    if (name == 'amount')
+      collate[index][name]= Number(event.target.value);
+    else
+      collate[index][name]=event.target.value;
     this.setState({collate}); 
   })
 

@@ -16,7 +16,7 @@ export function getTransaction(){
 						date: snapshot.docs[i].data().date,
 						category: snapshot.docs[i].data().category,
 						description: snapshot.docs[i].data().description,
-						amount: snapshot.docs[i].data().amount,
+						amount: Number(snapshot.docs[i].data().amount),
 					};
 					data.push(object);
 				}
