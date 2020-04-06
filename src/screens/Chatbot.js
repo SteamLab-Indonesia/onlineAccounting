@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
+import { Redirect } from "react-router-dom";
 
 const config = {
     width: "350px",
@@ -67,7 +68,7 @@ const steps = [
                   {
                     value: true,
                     label: "Yes",
-                    trigger: "Done"
+                    trigger: () => {return <Redirect to ='/transaction'/>}
                   },
                   { 
                     value: "false",
@@ -148,7 +149,11 @@ const steps = [
 ];
 
 class Chatbot extends Component {
+    // state = { redirect: '/transaction' };
     render(){
+        // if (this.state.redirect) {
+        //     return <Redirect to={this.state.redirect} />
+        //   }
         return(
             <ThemeProvider theme={theme}>
                 <ChatBot steps={steps} {...config} />
