@@ -20,7 +20,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { Route, Switch } from "react-router-dom";
 import TransactionList from 'screens/TransactionList';
-import Dashboard from 'screens/Dashboard'
+import Dashboard from 'screens/Dashboard';
 
 const drawerWidth = 240;
 
@@ -137,7 +137,7 @@ class App extends React.Component {
           </div>
           <Divider />
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            {['Dashboard', 'Transaction', 'Send email', 'Drafts'].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />

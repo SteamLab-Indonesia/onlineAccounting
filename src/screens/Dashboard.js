@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import CardSummary from '../components/CardSummary';
 import DoughnutSummary from '../components/DoughtnutSummary';
 import {getTransaction, getIncomeCategory, getExpenseCategory} from  '../libs/database';
+import Chatbot from 'screens/Chatbot';
 
 const styles = {
   card: {
@@ -160,6 +161,7 @@ class Dashboard extends Component { //function has no state, class extends from 
               }}
             />
             </div>
+            <Chatbot />
           </div>
         );
     }
