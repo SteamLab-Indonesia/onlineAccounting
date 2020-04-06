@@ -1,4 +1,4 @@
-import React, {COmponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -21,6 +21,12 @@ import MailIcon from '@material-ui/icons/Mail';
 import { Route, Switch } from "react-router-dom";
 import TransactionList from 'screens/TransactionList';
 import Dashboard from 'screens/Dashboard';
+import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
+import ReceiptRoundedIcon from '@material-ui/icons/ReceiptRounded';
+import LiveHelpRoundedIcon from '@material-ui/icons/LiveHelpRounded';
+import QuestionAnswerRoundedIcon from '@material-ui/icons/QuestionAnswerRounded';
+import { Redirect } from "react-router-dom";
+import Link from '@material-ui/core/Link';
 
 const drawerWidth = 240;
 
@@ -84,6 +90,11 @@ const styles = theme => ({
 class App extends React.Component {
   state = {
     open: false,
+    redirectDashboard: false,
+    redirectFAQ: false,
+    redirectTransaction: false,
+    redirectToDashboard: '/Dashboard',
+    redirectToTransaction: '/transaction'
   };
 
   handleDrawerOpen = () => {
@@ -94,11 +105,43 @@ class App extends React.Component {
     this.setState({ open: false });
   };
 
+  onDashboardPress = () => {
+    this.setState({redirectDashboard:true})
+  }
+
+  // onFAQPress = () => {
+  //   this.setState({redirectDashboard:true})
+  // }
+
+  onTransactionPress = () => {
+    this.setState({redirectTransaction:true})
+  }
+
+  // refreshFunction () {
+  //   // Router.dispatch(location.getCurrentPath(), null);
+  //   window.location.reload()
+  // }
+
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state;
+    
+    if (this.state.redirectDashboard) {
+      return <Redirect to={this.state.redirectToDashboard} />
+    }
+
+    if (this.state.redirectTransaction) {
+      return <Redirect to={this.state.redirectToTransaction} />
+    }
+
+    if (this.state.redirectDashboard || this.state.redirectTransaction){
+      return window.location.reload()
+    }
+
+    console.log(this.state.redirectDashboard)
 
     return (
+      
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
@@ -137,18 +180,30 @@ class App extends React.Component {
           </div>
           <Divider />
           <List>
-            {['Dashboard', 'Transaction', 'Send email', 'Drafts'].map((text, index) => (
+            {['Dashboard', 'Transaction'].map((text, index) => (
               <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>{ index === 0 ? 
+                  <Link onClick={this.onDashboardPress} color="inherit"><DashboardRoundedIcon></DashboardRoundedIcon></Link>
+                      /* <Link to="/Dashboard" className="btn btn-primary"><DashboardRoundedIcon></DashboardRoundedIcon></Link> */
+                   : <ReceiptRoundedIcon onClick={this.onTransactionPress}/>}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
+
+              // <Link color="inherit">
+              // <ListItem button key={text}>
+              //   <ListItemIcon>{ index === 0 ? 
+              //     <DashboardRoundedIcon onClick={this.onDashboardPress}></DashboardRoundedIcon>
+              //     : <ReceiptRoundedIcon onClick={this.onTransactionPress}/>}</ListItemIcon>
+              //   <ListItemText primary={text} />
+              // </ListItem>
+              // </Link>
             ))}
           </List>
           <Divider />
           <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            {['FAQs', 'Chatbot'].map((text, index) => (
               <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>{index % 2 === 0 ? <QuestionAnswerRoundedIcon /> : <LiveHelpRoundedIcon/>}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             ))}
@@ -176,3 +231,4 @@ App.propTypes = {
 };
 
 export default withStyles(styles, { withTheme: true })(App);
+//cannot auto refresh when link pressed

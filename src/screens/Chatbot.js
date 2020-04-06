@@ -102,7 +102,7 @@ const steps = [
                   {
                     value: true,
                     label: "Yes",
-                    trigger: "Type complaint"  
+                    trigger: "Complaint question"  
                   },
                   { 
                     value: "false",
@@ -110,6 +110,11 @@ const steps = [
                     trigger: "Asking something else"
                   } 
                 ]
+    },
+    {
+      id:'Complaint question',
+      message: 'Please type your complaint. \n We will try out best to review it.',
+      trigger:'Type complaint'
     },
     {
         id: 'Type complaint',
