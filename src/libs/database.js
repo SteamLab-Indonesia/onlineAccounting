@@ -148,3 +148,55 @@ export function insertCategory(newData){
 		}
 	})
 }
+
+export function getChatroom(sender, recipient)
+{
+	return new Promise((resolve, reject) => {
+		const db = firebase.firestore();
+		db.collection('chatroom')
+		.where('sender', 'in', [sender, recipient])
+		.get().
+		then((data) => {
+			if (data.empty)
+				resolve(null);
+			else
+			{
+				resolve({
+					id: data.docs[0].id,
+					sender: data.docs[0].data().sender,
+					recipient: data.docs[0].data().recipient,
+				})
+			}
+		}).catch((err) => reject(err));
+	})
+}
+
+export function getChatMessage(chatroomId)
+{
+	return new Promise((resolve,reject)=>{
+		const db = firebase.firestore();
+		db.collection('chats')
+		.where('chatroom', '==', db.collection('chatroom').doc(chatroomId))
+		.orderBy('timestamp', 'desc')
+		.limit(100).get()
+		.then((snapshot) =>{
+			if (snapshot.empty)
+				resolve([])
+			else
+			{
+				let messages = [];
+				for(let i=0; i < snapshot.docs.length; ++i)
+				{
+					let doc = snapshot.docs[i];
+					messages.push({
+						id: doc.id,
+						from: doc.data().from,
+						message: doc.data().message,
+						timestamp: doc.data().timestamp
+					})
+				}
+				resolve(messages);
+			}
+		}).catch((err)=>reject(err));
+	})
+}
