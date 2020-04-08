@@ -200,3 +200,45 @@ export function getChatMessage(chatroomId)
 		}).catch((err)=>reject(err));
 	})
 }
+
+export function sendChatMessage(chatroomId, from, message) {
+	return new Promise((resolve, reject) => {
+		const db = firebase.firestore();
+		
+		if (!chatroomId)
+			reject('Invalid Chatroom Id');
+
+		db.collection('chats').add({
+			chatroom: db.collection('chatroom').doc(chatroomId),
+			from: from,
+			message: message,
+			timestamp: new Date()
+		}).then((snapshot) => {
+			resolve(snapshot.id);
+		}).catch((err) => reject(err));
+	});
+}
+
+export function onNewChatMessage(chatroomId, callbackFunction)
+{
+	const db = firebase.firestore();
+	db.collection('chats')
+	.where('chatroom', '==', db.collection('chatroom').doc(chatroomId))
+	.orderBy('timestamp', 'desc')
+	.onSnapshot((snapshot) => {
+		let messages = [];
+		for (let i=0; i < snapshot.docs.length; ++i)
+		{
+			let doc = snapshot.docs[i];
+			messages.push({
+				id: doc.id,
+				from: doc.data().from,
+				message: doc.data().message,
+				timestamp: doc.data().timestamp
+			});
+		}
+		if (callbackFunction)
+			callbackFunction(messages);
+
+	})
+}
