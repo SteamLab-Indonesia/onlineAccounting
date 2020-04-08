@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import CardSummary from '../components/CardSummary';
 import DoughnutSummary from '../components/DoughtnutSummary';
 import {getTransaction, getIncomeCategory, getExpenseCategory} from  '../libs/database';
-import Chatbot from 'screens/Chatbot';
+import ChatBox from 'screens/ChatBox';
 
 const styles = {
   card: {
@@ -56,22 +56,33 @@ class Dashboard extends Component { //function has no state, class extends from 
     componentDidMount = () => {
       //firebase - get income data
       getIncomeCategory().then((data) => {
-        this.setState({
-          income:data.map((item)=>item.id),
-          incomeSection:data})
+        if (data)
+        {
+          this.setState({
+            income:data.map((item)=>item.id),
+            incomeSection:data
+          })
+        }
       })
       //firebase - get expense data
       getExpenseCategory().then((data) => {
-        this.setState({
-          expense:data.map((item)=>item.id),
-          expenseSection:data})
+        if (data)
+        {
+          this.setState({
+            expense:data.map((item)=>item.id),
+            expenseSection:data
+          })
+        }
       })
       //firebase-get transaction
       getTransaction().then((data) => {
-        this.setState({transaction:data})
+        if (data)
+        {
+          this.setState({transaction:data})
+        }        
       })
     }
-    generateColor () {
+    generateColor = () => {
       return '#' +  Math.random().toString(16).substr(-6);
     }
 
@@ -161,7 +172,7 @@ class Dashboard extends Component { //function has no state, class extends from 
               }}
             />
             </div>
-            <Chatbot />
+            <ChatBox />
           </div>
         );
     }

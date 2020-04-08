@@ -204,7 +204,7 @@ export function getChatMessage(chatroomId)
 export function sendChatMessage(chatroomId, from, message) {
 	return new Promise((resolve, reject) => {
 		const db = firebase.firestore();
-		
+
 		if (!chatroomId)
 			reject('Invalid Chatroom Id');
 
