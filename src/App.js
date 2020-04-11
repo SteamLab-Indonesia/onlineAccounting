@@ -21,6 +21,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import { Route, Switch } from "react-router-dom";
 import TransactionList from 'screens/TransactionList';
 import Dashboard from 'screens/Dashboard';
+import SignIn from 'screens/SignIn';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import ReceiptRoundedIcon from '@material-ui/icons/ReceiptRounded';
 import LiveHelpRoundedIcon from '@material-ui/icons/LiveHelpRounded';
@@ -222,6 +223,7 @@ class App extends React.Component {
             <Switch>
               <Route path='/transaction' component = {TransactionList} />
               <Route path='/dashboard' component = {Dashboard} />
+              <Route path='/signin' component = {SignIn} />
             </Switch>
         </main>
       </div>
