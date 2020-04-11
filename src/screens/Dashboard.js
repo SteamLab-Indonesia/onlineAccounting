@@ -141,15 +141,15 @@ class Dashboard extends Component { //function has no state, class extends from 
             <div className = {classes.container}>
             <CardSummary
               title='Income'
-              content= {'Amount: '+ incomeAmount}
+              content= {'Amount: '+ incomeAmount.toLocaleString('id')}
             />
             <CardSummary
               title='Expense'
-              content= {'Amount: '+ expenseAmount}
+              content= {'Amount: '+ expenseAmount.toLocaleString('id')}
             />
             <CardSummary
               title='Balance'
-              content= {'Amount: '+ balanceAmount}
+              content= {'Amount: '+ balanceAmount.toLocaleString('id')}
             />
           </div>
             <div className = {classes.container}>
