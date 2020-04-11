@@ -25,8 +25,7 @@ import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import ReceiptRoundedIcon from '@material-ui/icons/ReceiptRounded';
 import LiveHelpRoundedIcon from '@material-ui/icons/LiveHelpRounded';
 import QuestionAnswerRoundedIcon from '@material-ui/icons/QuestionAnswerRounded';
-import { Redirect } from "react-router-dom";
-import Link from '@material-ui/core/Link';
+import { Redirect, Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -86,6 +85,19 @@ const styles = theme => ({
     marginLeft: 0,
   },
 });
+
+const menuItem = [
+  {
+    text: 'Dashboard',
+    icon: <DashboardRoundedIcon />,
+    link: '/dashboard'
+  },
+  {
+    text: 'Transaction',
+    icon: <ReceiptRoundedIcon />,
+    link: '/transaction'
+  },  
+]
 
 class App extends React.Component {
   state = {
@@ -180,24 +192,16 @@ class App extends React.Component {
           </div>
           <Divider />
           <List>
-            {['Dashboard', 'Transaction'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{ index === 0 ? 
-                  <Link onClick={this.onDashboardPress} color="inherit"><DashboardRoundedIcon></DashboardRoundedIcon></Link>
-                      /* <Link to="/Dashboard" className="btn btn-primary"><DashboardRoundedIcon></DashboardRoundedIcon></Link> */
-                   : <ReceiptRoundedIcon onClick={this.onTransactionPress}/>}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-
-              // <Link color="inherit">
-              // <ListItem button key={text}>
-              //   <ListItemIcon>{ index === 0 ? 
-              //     <DashboardRoundedIcon onClick={this.onDashboardPress}></DashboardRoundedIcon>
-              //     : <ReceiptRoundedIcon onClick={this.onTransactionPress}/>}</ListItemIcon>
-              //   <ListItemText primary={text} />
-              // </ListItem>
-              // </Link>
-            ))}
+            {
+              menuItem.map((item) => {
+                return (
+                  <ListItem button key={item.text} component={Link} to={item.link}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItem>
+                )
+              })
+            }
           </List>
           <Divider />
           <List>
