@@ -34,6 +34,12 @@ class ChatBox extends Component {
 		// setInterval(this.autoSendMessage, 10000);
 	}
 
+    onSendMessage = (message) => {
+        console.log('You want to send message');
+        console.log(message);
+        sendChatMessage('gBU1pg2Gn5Wccc2A0LwD', 'yvonne.tansu@gmail.com', message);
+    }
+
 	refreshMessage = ((messages) => {
 		this.setState({messages})
 	})
@@ -43,7 +49,7 @@ class ChatBox extends Component {
 		console.log(messages);
         return(
             <ThemeProvider theme={theme}>
-                <ChatBot messages={messages} user="yvonne.tansu@gmail.com" {...config} />
+                <ChatBot messages={messages} user="yvonne.tansu@gmail.com" onSendMessage={this.onSendMessage} {...config} />
             </ThemeProvider>
         )
     }

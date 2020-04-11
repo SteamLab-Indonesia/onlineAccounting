@@ -161,11 +161,19 @@ export function getChatroom(sender, recipient)
 				resolve(null);
 			else
 			{
-				resolve({
-					id: data.docs[0].id,
-					sender: data.docs[0].data().sender,
-					recipient: data.docs[0].data().recipient,
-				})
+				for (let i=0; i < data.docs.length; ++i)
+				{
+					let chatroom = data.docs[i];
+					if (chatroom.data().recipient == recipient)
+					{
+						resolve({
+							id: chatroom.id,
+							sender: chatroom.data().sender,
+							recipient: chatroom.data().recipient
+						})
+					}
+				}
+				resolve(null);
 			}
 		}).catch((err) => reject(err));
 	})

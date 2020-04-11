@@ -47,6 +47,16 @@ class ChatBot extends Component {
         }
     };
 
+    onValueChange = (e) => {
+      this.setState({inputValue: e.target.value});
+    }
+
+    handleSubmitButton = () => {
+      if (this.props.onSendMessage) {
+        this.props.onSendMessage(this.state.inputValue);
+      }
+    }
+
     renderMessage = () => {
 		if (this.props.messages)
 		{
