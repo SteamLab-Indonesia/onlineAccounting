@@ -27,6 +27,38 @@ class ChatBot extends Component {
         defaultUserSettings: {}
     };
 
+    constructor(props) {
+      super(props);
+      
+      this.content = null;
+      // this.input = null;
+  
+      this.supportsScrollBehavior = false;
+  
+      this.setContentRef = element => {
+        this.content = element;
+      };      
+    }
+    onNodeInserted = event => {
+      console.log('Node Inserted')
+      const { currentTarget: target } = event;
+      const { enableSmoothScroll } = this.props;
+  
+      if (enableSmoothScroll && this.supportsScrollBehavior) {
+        target.scroll({
+          top: target.scrollHeight,
+          left: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        target.scrollTop = target.scrollHeight;
+      }
+    };
+  
+    onResize = () => {
+      this.content.scrollTop = this.content.scrollHeight;
+    };
+
     componentDidMount() {
 
         this.supportsScrollBehavior = 'scrollBehavior' in document.documentElement.style;
@@ -51,35 +83,45 @@ class ChatBot extends Component {
       this.setState({inputValue: e.target.value});
     }
 
-    handleSubmitButton = () => {
+    submitMessage = () => {
       if (this.props.onSendMessage) {
         this.props.onSendMessage(this.state.inputValue);
+        this.setState({inputValue: ''});
       }
+    }
+    handleSubmitButton = () => {
+      this.submitMessage();
+    }
+
+    handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        this.submitMessage();
+      }   
     }
 
     renderMessage = () => {
-		if (this.props.messages)
-		{
-			this.props.messages.reverse();
-			return this.props.messages.map((item, index, allItems) => {
-				return (
-					<TextStep
-						key={index}
-						botAvatar={this.props.botAvatar}
-						userAvatar={this.props.userAvatar}
-						avatarStyle={{}}
-						user={item.from == this.props.user}
-						message={item.message}
-						isFirst={index == 0 || (item.from != allItems[index-1].from)}
-					/>
-				);
-			})
-		}
-		else
-		{
-			return null;
-		}
-	}
+      if (this.props.messages)
+      {
+        // this.props.messages.reverse();
+        return this.props.messages.map((item, index, allItems) => {
+          return (
+            <TextStep
+              key={index}
+              botAvatar={this.props.botAvatar}
+              userAvatar={this.props.userAvatar}
+              avatarStyle={{}}
+              user={item.from == this.props.user}
+              message={item.message}
+              isFirst={index == 0 || (item.from != allItems[index-1].from)}
+            />
+          );
+        })
+      }
+      else
+      {
+        return null;
+      }
+	  }
 	
     render() {
       const {
@@ -156,7 +198,7 @@ class ChatBot extends Component {
                   height={height}
                   hideInput={false}
                 >
-					{this.renderMessage()}
+					        {this.renderMessage()}
                 </Content>
                 <Footer className="rsc-footer" style={footerStyle}>
                     <Input

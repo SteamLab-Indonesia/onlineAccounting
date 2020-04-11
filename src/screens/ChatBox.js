@@ -46,7 +46,7 @@ class ChatBox extends Component {
 
     onSendMessage = (message) => {
         if (this.state.chatroom.id)
-            sendChatMessage(this.state.chatroom.id, this.state.recipient, message);
+            sendChatMessage(this.state.chatroom.id, getCurrentUser(), message);
     }
 
 	refreshMessage = ((messages) => {
@@ -58,7 +58,8 @@ class ChatBox extends Component {
 		console.log(messages);
         return(
             <ThemeProvider theme={theme}>
-                <ChatBot messages={messages} user="yvonne.tansu@gmail.com" onSendMessage={this.onSendMessage} {...config} />
+                <ChatBot messages={messages} user={getCurrentUser()} enableSmoothScroll={true} 
+                    onSendMessage={this.onSendMessage} {...config} />
             </ThemeProvider>
         )
     }

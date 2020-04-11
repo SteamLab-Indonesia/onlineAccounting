@@ -267,7 +267,7 @@ export function onNewChatMessage(chatroomId, callbackFunction)
 	const db = firebase.firestore();
 	db.collection('chats')
 	.where('chatroom', '==', db.collection('chatroom').doc(chatroomId))
-	.orderBy('timestamp', 'desc')
+	.orderBy('timestamp', 'asc')
 	.onSnapshot((snapshot) => {
 		let messages = [];
 		for (let i=0; i < snapshot.docs.length; ++i)
