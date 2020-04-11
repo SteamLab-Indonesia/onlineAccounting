@@ -1,10 +1,26 @@
 import firebase from './dbsetting';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
+export function getCurrentUser() {
+    return cookies.get('user');    
+}
+
+export function updateUser(user)
+{
+    cookies.set('user', user, {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: '/'
+    });
+}
 
 export function login(username, password) {
 
 	return new Promise((resolve, reject) => {
 		firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
-			resolve(username);
+			updateUser(username);
+			resolve();
 		}).catch((err)=>reject(err));
 	})
 }
@@ -182,7 +198,8 @@ export function getChatroom(sender, recipient)
 				for (let i=0; i < data.docs.length; ++i)
 				{
 					let chatroom = data.docs[i];
-					if (chatroom.data().recipient == recipient)
+					if (chatroom.data().recipient == recipient ||
+						chatroom.data().recipient == sender)
 					{
 						resolve({
 							id: chatroom.id,

@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import ChatBot from '../components/ChatBot';
 import { ThemeProvider } from "styled-components";
 import { Redirect } from "react-router-dom";
-import { getChatroom, getChatMessage, onNewChatMessage, sendChatMessage } from '../libs/database';
+import { getCurrentUser, getChatroom, getChatMessage, onNewChatMessage, sendChatMessage } from '../libs/database';
 
 const config = {
     width: "350px",
@@ -26,18 +26,27 @@ const theme = {
 class ChatBox extends Component {
 	// state = { redirect: '/transaction' };
 	state = { 
-		messages: []
+        messages: [],
+        chatroom: {},
+        recipient: 'yvonne.tansu@gmail.com'
 	}
 
 	componentDidMount = () => {
-		onNewChatMessage('gBU1pg2Gn5Wccc2A0LwD', this.refreshMessage);
-		// setInterval(this.autoSendMessage, 10000);
+        console.log(getCurrentUser());
+        getChatroom(getCurrentUser(), this.state.recipient).then((data) => {
+            console.log(data);
+            
+            if (data)
+            {
+                this.setState({chatroom: data})
+                onNewChatMessage(data.id, this.refreshMessage);
+            }
+        })
 	}
 
     onSendMessage = (message) => {
-        console.log('You want to send message');
-        console.log(message);
-        sendChatMessage('gBU1pg2Gn5Wccc2A0LwD', 'yvonne.tansu@gmail.com', message);
+        if (this.state.chatroom.id)
+            sendChatMessage(this.state.chatroom.id, this.state.recipient, message);
     }
 
 	refreshMessage = ((messages) => {
