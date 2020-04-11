@@ -1,5 +1,23 @@
 import firebase from './dbsetting';
 
+export function login(username, password) {
+
+	return new Promise((resolve, reject) => {
+		firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
+			resolve(username);
+		}).catch((err)=>reject(err));
+	})
+}
+
+export function logout() {
+	return new Promise((resolve, reject) => {
+		firebase.auth().signOut().then(() => {
+			resolve('success');
+		})
+		.catch((err) => reject(err))
+	})
+}
+
 export function getTransaction(){
 	return new Promise((resolve,reject)=>{
 		const db = firebase.firestore();
